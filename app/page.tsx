@@ -7,9 +7,10 @@ import Charts from './components/Charts';
 import ExpenseFilters from './components/ExpenseFilters';
 import ExpenseList from './components/ExpenseList';
 import ExpenseForm from './components/ExpenseForm';
+import ExportModal from './components/ExportModal';
 import { useExpenses } from './hooks/useExpenses';
 import { Expense, Filters, ExpenseFormData } from './types/expense';
-import { filterExpenses, exportToCSV } from './lib/utils';
+import { filterExpenses } from './lib/utils';
 import { Plus, Download, BarChart2, List } from 'lucide-react';
 
 const DEFAULT_FILTERS: Filters = {
@@ -22,6 +23,7 @@ const DEFAULT_FILTERS: Filters = {
 export default function Home() {
   const { expenses, isLoaded, addExpense, updateExpense, deleteExpense } = useExpenses();
   const [showForm, setShowForm] = useState(false);
+  const [showExport, setShowExport] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [activeTab, setActiveTab] = useState<'list' | 'charts'>('list');
@@ -68,11 +70,11 @@ export default function Home() {
           <div className="flex items-center gap-2">
             {expenses.length > 0 && (
               <button
-                onClick={() => exportToCSV(filtered)}
+                onClick={() => setShowExport(true)}
                 className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors shadow-sm"
               >
                 <Download size={14} />
-                <span className="hidden sm:inline">Export CSV</span>
+                <span className="hidden sm:inline">Export Data</span>
               </button>
             )}
             <button
@@ -130,6 +132,10 @@ export default function Home() {
           onClose={handleFormClose}
           editing={editingExpense}
         />
+      )}
+
+      {showExport && (
+        <ExportModal expenses={expenses} onClose={() => setShowExport(false)} />
       )}
     </div>
   );
