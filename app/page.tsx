@@ -3,14 +3,14 @@
 import { useState, useMemo } from 'react';
 import Navbar from './components/Navbar';
 import SummaryCards from './components/SummaryCards';
-import Charts from './components/Charts';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
 import ExpenseFilters from './components/ExpenseFilters';
 import ExpenseList from './components/ExpenseList';
 import ExpenseForm from './components/ExpenseForm';
 import { useExpenses } from './hooks/useExpenses';
 import { Expense, Filters, ExpenseFormData } from './types/expense';
-import { filterExpenses, exportToCSV } from './lib/utils';
-import { Plus, Download, BarChart2, List } from 'lucide-react';
+import { filterExpenses } from './lib/utils';
+import { Plus, BarChart2, List } from 'lucide-react';
 
 const DEFAULT_FILTERS: Filters = {
   search: '',
@@ -24,7 +24,7 @@ export default function Home() {
   const [showForm, setShowForm] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
-  const [activeTab, setActiveTab] = useState<'list' | 'charts'>('list');
+  const [activeTab, setActiveTab] = useState<'list' | 'analytics'>('list');
 
   const filtered = useMemo(() => filterExpenses(expenses, filters), [expenses, filters]);
 
@@ -65,24 +65,13 @@ export default function Home() {
             <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
             <p className="text-sm text-gray-500 mt-0.5">Track and manage your expenses</p>
           </div>
-          <div className="flex items-center gap-2">
-            {expenses.length > 0 && (
-              <button
-                onClick={() => exportToCSV(filtered)}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors shadow-sm"
-              >
-                <Download size={14} />
-                <span className="hidden sm:inline">Export CSV</span>
-              </button>
-            )}
-            <button
-              onClick={() => setShowForm(true)}
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors shadow-sm"
-            >
-              <Plus size={16} />
-              <span>Add Expense</span>
-            </button>
-          </div>
+          <button
+            onClick={() => setShowForm(true)}
+            className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors shadow-sm"
+          >
+            <Plus size={16} />
+            <span>Add Expense</span>
+          </button>
         </div>
 
         {/* Summary Cards */}
@@ -102,15 +91,15 @@ export default function Home() {
             Expenses
           </button>
           <button
-            onClick={() => setActiveTab('charts')}
+            onClick={() => setActiveTab('analytics')}
             className={`flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-              activeTab === 'charts'
+              activeTab === 'analytics'
                 ? 'bg-violet-600 text-white shadow-sm'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             <BarChart2 size={14} />
-            Charts
+            Analytics
           </button>
         </div>
 
@@ -120,7 +109,7 @@ export default function Home() {
             <ExpenseList expenses={filtered} onEdit={handleEdit} onDelete={deleteExpense} />
           </>
         ) : (
-          <Charts expenses={expenses} />
+          <AnalyticsDashboard expenses={expenses} />
         )}
       </main>
 
