@@ -9,8 +9,9 @@ import ExpenseList from './components/ExpenseList';
 import ExpenseForm from './components/ExpenseForm';
 import { useExpenses } from './hooks/useExpenses';
 import { Expense, Filters, ExpenseFormData } from './types/expense';
-import { filterExpenses, exportToCSV } from './lib/utils';
-import { Plus, Download, BarChart2, List } from 'lucide-react';
+import { filterExpenses } from './lib/utils';
+import ExportMenu from './components/ExportMenu';
+import { Plus, BarChart2, List } from 'lucide-react';
 
 const DEFAULT_FILTERS: Filters = {
   search: '',
@@ -66,15 +67,7 @@ export default function Home() {
             <p className="text-sm text-gray-500 mt-0.5">Track and manage your expenses</p>
           </div>
           <div className="flex items-center gap-2">
-            {expenses.length > 0 && (
-              <button
-                onClick={() => exportToCSV(filtered)}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors shadow-sm"
-              >
-                <Download size={14} />
-                <span className="hidden sm:inline">Export CSV</span>
-              </button>
-            )}
+            <ExportMenu expenses={expenses} />
             <button
               onClick={() => setShowForm(true)}
               className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors shadow-sm"
