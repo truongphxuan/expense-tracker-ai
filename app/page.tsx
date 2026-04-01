@@ -68,11 +68,11 @@ export default function Home() {
           <div className="flex items-center gap-2">
             {expenses.length > 0 && (
               <button
-                onClick={() => exportToCSV(filtered)}
+                onClick={() => exportToCSV(expenses)}
                 className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors shadow-sm"
               >
                 <Download size={14} />
-                <span className="hidden sm:inline">Export CSV</span>
+                Export Data
               </button>
             )}
             <button
