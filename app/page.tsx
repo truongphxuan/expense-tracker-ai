@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Navbar from './components/Navbar';
 import SummaryCards from './components/SummaryCards';
-import Charts from './components/Charts';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
 import ExpenseFilters from './components/ExpenseFilters';
 import ExpenseList from './components/ExpenseList';
 import ExpenseForm from './components/ExpenseForm';
@@ -25,7 +25,7 @@ export default function Home() {
   const [showForm, setShowForm] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
-  const [activeTab, setActiveTab] = useState<'list' | 'charts'>('list');
+  const [activeTab, setActiveTab] = useState<'list' | 'analytics'>('list');
 
   const filtered = useMemo(() => filterExpenses(expenses, filters), [expenses, filters]);
 
@@ -95,15 +95,15 @@ export default function Home() {
             Expenses
           </button>
           <button
-            onClick={() => setActiveTab('charts')}
+            onClick={() => setActiveTab('analytics')}
             className={`flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-              activeTab === 'charts'
+              activeTab === 'analytics'
                 ? 'bg-violet-600 text-white shadow-sm'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             <BarChart2 size={14} />
-            Charts
+            Analytics
           </button>
         </div>
 
@@ -113,7 +113,7 @@ export default function Home() {
             <ExpenseList expenses={filtered} onEdit={handleEdit} onDelete={deleteExpense} />
           </>
         ) : (
-          <Charts expenses={expenses} />
+          <AnalyticsDashboard expenses={expenses} />
         )}
       </main>
 
